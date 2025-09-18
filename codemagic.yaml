@@ -1,18 +1,17 @@
 workflows:
-  sample-workflow:
-    name: Codemagic Sample Workflow
-    max_build_duration: 120
+  ios-native:
+    name: iOS Native Build
     instance_type: mac_mini_m2
-    environment:
-      vars:
-        XCODE_WORKSPACE: "ios/Runner.xcworkspace"
-        XCODE_SCHEME: "Runner"
+    max_build_duration: 120
     scripts:
-      - name: Build ipa
+      - name: Build IPA
         script: |
           xcode-project build-ipa \
-            --workspace "$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
+            --project "AutoSetupApp.xcodeproj" \
+            --scheme "AutoSetupApp" \
+            --export-options-plist "exportOptions.plist" \
+            --archive-directory build/ios/archive \
+            --ipa-directory build/ios/ipa
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/ipa/*.dSYM.zip
